@@ -12,7 +12,7 @@ resource "aws_vpc" "vpc1" {
 resource "aws_subnet" "public1_subnet" {
   vpc_id                  = "${aws_vpc.vpc1.id}"
   cidr_block             = "${var.publicsubnet1_cidr}"
-  availability_zone = "us-west-1a"
+  availability_zone = "us-east-1a"
   map_public_ip_on_launch = true
 tags = {
     Name = "primary public subnet 1"
@@ -21,7 +21,7 @@ tags = {
 resource "aws_subnet" "public2_subnet" {
   vpc_id                  = "${aws_vpc.vpc1.id}"
   cidr_block             = "${var.publicsubnet2_cidr}"
-  availability_zone = "us-west-1b"
+  availability_zone = "us-east-1b"
   map_public_ip_on_launch = true
 tags = {
     Name = "primary public subnet 2"
@@ -30,7 +30,7 @@ tags = {
 resource "aws_subnet" "public3_subnet" {
   vpc_id                  = "${aws_vpc.vpc1.id}"
   cidr_block             = "${var.publicsubnet3_cidr}"
-  availability_zone = "us-west-1b"
+  availability_zone = "us-east-1c"
   map_public_ip_on_launch = true
 tags = {
     Name = "primary public subnet 3"
@@ -40,7 +40,7 @@ tags = {
 resource "aws_subnet" "private1_subnet" {
   vpc_id                  = "${aws_vpc.vpc1.id}"
   cidr_block             = "${var.privatesubnet1_cidr}"
-  availability_zone = "us-west-1a"
+  availability_zone = "us-east-1a"
   map_public_ip_on_launch = false
 tags = {
     Name = "primary private subnet 1"
@@ -49,7 +49,7 @@ tags = {
 resource "aws_subnet" "private2_subnet" {
   vpc_id                  = "${aws_vpc.vpc1.id}"
   cidr_block             = "${var.privatesubnet2_cidr}"
-  availability_zone = "us-west-1b"
+  availability_zone = "us-east-1b"
   map_public_ip_on_launch = false
 tags = {
     Name = "primary private subnet 2"
@@ -58,7 +58,7 @@ tags = {
 resource "aws_subnet" "private3_subnet" {
   vpc_id                  = "${aws_vpc.vpc1.id}"
   cidr_block             = "${var.privatesubnet3_cidr}"
-  availability_zone = "us-west-1b"
+  availability_zone = "us-east-1c"
   map_public_ip_on_launch = false
 tags = {
     Name = "primary private subnet 3"
@@ -133,13 +133,13 @@ resource "aws_internet_gateway" "internetgateway_1" {
 # Creating Route Table for Public Subnets
 resource "aws_route_table" "rt_publicprimary" {
     vpc_id = aws_vpc.vpc1.id
-route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = aws_internet_gateway.internetgateway_1.id
-    }
-tags = {
-        Name = "PublicRouteTable"
-    }
+    route {
+            cidr_block = "0.0.0.0/0"
+            gateway_id = aws_internet_gateway.internetgateway_1.id
+        }
+    tags = {
+            Name = "PublicRouteTable us-east-1"
+        }
 }
 # Associate public subnet 1 with route table
 resource "aws_route_table_association" "rt_associate_public1" {
@@ -160,14 +160,10 @@ resource "aws_route_table_association" "rt_associate_public3" {
 # Creating Route Table for Private Subnets
 resource "aws_route_table" "rt_privateprimary" {
     vpc_id = aws_vpc.vpc1.id
-    # depends_on    = [var.transit_gateway_id]
-route {
-        cidr_block = "10.1.0.0/20" # should just be IP range of private subnets by default
-        transit_gateway_id = var.transit_gateway_id
-    }
-tags = {
-        Name = "PrivateRouteTable"
-    }
+    route = []
+    tags = {
+            Name = "PrivateRouteTable us-east-1"
+        }
 
 }
 # Associate private subnet 1 with internal route table

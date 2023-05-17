@@ -1,11 +1,23 @@
+# One time request to peer two VPCs using transit gateway
+provider "aws" {
+  alias  = "primary"
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "peer"
+  region = "eu-west-1"
+}
 # Create transit gateway primary
 resource "aws_ec2_transit_gateway" "primarytransitgateway" {
   provider = aws.primary
-  description = "Transit Gateway primary region"
+  auto_accept_shared_attachments   = var.auto_accept_shared_attachments
+  amazon_side_asn                  = var.amazon_side_asn
+  description = "Transit Gateway us-west-1"
 }
 resource "aws_ec2_transit_gateway" "secondarytransitgateway" {
   provider = aws.peer
-  description = "Transit Gateway secondary region"
+  description = "Transit Gateway eu-west-1"
 }
 # Connect transit gateway to subnets and vpc
 # , var.private2_subnet_id, var.private3_subnet_id
@@ -22,16 +34,6 @@ resource "aws_ec2_transit_gateway_connect" "tgw_connect" {
   transport_attachment_id = aws_ec2_transit_gateway_vpc_attachment.tgw_attachment.id
   transit_gateway_id      = aws_ec2_transit_gateway.primarytransitgateway.id
 }
-# One time request to peer two VPCs using transit gateway
-provider "aws" {
-  alias  = "primary"
-  region = "us-west-1"
-}
-
-provider "aws" {
-  alias  = "peer"
-  region = "eu-west-1"
-}
 
 data "aws_region" "peer" {
   provider = aws.peer
@@ -47,12 +49,9 @@ resource "aws_ec2_transit_gateway_peering_attachment" "one_time__tgw_attachment"
     Name = "TGW Peering Requestor"
   }
 }
-# creating transit gateway route table
-resource "aws_ec2_transit_gateway_route_table" "tgwroutetable" {
-  transit_gateway_id = aws_ec2_transit_gateway.primarytransitgateway.id
-}
-# associate primary tgw with route table above
-resource "aws_ec2_transit_gateway_route_table_association" "tgwassociation" {
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.tgw_attachment.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgwroutetable.id
+# Add TGW to existing private route table
+resource "aws_route" "add_tgw_route" {
+  route_table_id         = var.private_route_table
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = aws_ec2_transit_gateway.primarytransitgateway.id
 }

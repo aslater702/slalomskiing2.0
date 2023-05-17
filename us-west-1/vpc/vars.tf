@@ -1,6 +1,6 @@
 # AWS Region Primary
 variable "aws_region" {
-	default = "us-west-1"
+	default = "us-east-1"
 }
 # AMI variable for app servers
 variable "AMI" {
