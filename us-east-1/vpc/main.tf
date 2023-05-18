@@ -4,7 +4,7 @@ resource "aws_vpc" "vpc1" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "primary VPC"
+    Name = "us-east-1 VPC"
   }
 }
 ################################### SUBNETS #############################################
@@ -15,7 +15,7 @@ resource "aws_subnet" "public1_subnet" {
   availability_zone = "us-east-1a"
   map_public_ip_on_launch = true
 tags = {
-    Name = "primary public subnet 1"
+    Name = "us-east-1 public subnet 1"
   }
 }
 resource "aws_subnet" "public2_subnet" {
@@ -24,7 +24,7 @@ resource "aws_subnet" "public2_subnet" {
   availability_zone = "us-east-1b"
   map_public_ip_on_launch = true
 tags = {
-    Name = "primary public subnet 2"
+    Name = "us-east-1 public subnet 2"
   }
 }
 resource "aws_subnet" "public3_subnet" {
@@ -33,7 +33,7 @@ resource "aws_subnet" "public3_subnet" {
   availability_zone = "us-east-1c"
   map_public_ip_on_launch = true
 tags = {
-    Name = "primary public subnet 3"
+    Name = "us-east-1 public subnet 3"
   }
 }
 # Create private subnets
@@ -43,7 +43,7 @@ resource "aws_subnet" "private1_subnet" {
   availability_zone = "us-east-1a"
   map_public_ip_on_launch = false
 tags = {
-    Name = "primary private subnet 1"
+    Name = "us-east-1 private subnet 1"
   }
 }
 resource "aws_subnet" "private2_subnet" {
@@ -52,7 +52,7 @@ resource "aws_subnet" "private2_subnet" {
   availability_zone = "us-east-1b"
   map_public_ip_on_launch = false
 tags = {
-    Name = "primary private subnet 2"
+    Name = "us-east-1 private subnet 2"
   }
 }
 resource "aws_subnet" "private3_subnet" {
@@ -61,7 +61,7 @@ resource "aws_subnet" "private3_subnet" {
   availability_zone = "us-east-1c"
   map_public_ip_on_launch = false
 tags = {
-    Name = "primary private subnet 3"
+    Name = "us-east-1 private subnet 3"
   }
 }
 ################################### NETWORK ACLS ###########################################
@@ -90,7 +90,7 @@ resource "aws_network_acl" "publicnacl" {
   }
 
   tags = {
-    Name = "public ACL"
+    Name = "us-east-1 public ACL"
   }
 }
 # Create network ACLs for private subnets
@@ -119,7 +119,7 @@ resource "aws_network_acl" "privatenacl" {
   }
 
   tags = {
-    Name = "private ACL"
+    Name = "us-east-1 private ACL"
   }
 }
 ################################### ROUTE TABLES ###########################################
