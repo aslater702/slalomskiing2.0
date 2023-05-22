@@ -1,3 +1,8 @@
+# S3 bucket from failover region
+variable "failover_bucket" {}
+
+variable "failover_bucket_domain" {}
+
 # AWS Region variable
 variable "aws_region" {
 	default = "us-east-1"

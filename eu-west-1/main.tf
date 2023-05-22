@@ -10,13 +10,9 @@ terraform {
 }
 
 provider "aws" {
-  region  = "us-west-2"
+  region  = "eu-west-1"
 }
-# primary region vpc
-resource "aws_vpc" "vpc1" {
-  cidr_block       = "10.2.0.0/16"
-  instance_tenancy = "default"
 
-  tags = {
-    Name = "primary"
-  }
+module "failover_s3" {
+  source = "./failover_s3"
+}

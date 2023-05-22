@@ -33,3 +33,12 @@ module "tgw" {
 module "s3" {
   source = "./s3"
 }
+
+module "cloudfront" {
+  source = "./cloudfront"
+  s3_domain = module.s3.s3_domain
+  # from eu-west-1 region
+  failover_bucket_domain = var.failover_bucket_domain
+  cloudfront_origin = module.s3.cloudfront_origin
+  depends_on = module.s3
+}

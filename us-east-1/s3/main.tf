@@ -26,9 +26,9 @@ resource "aws_cloudfront_origin_access_identity" "s3_origin_identity" {
   comment = "cloudfront/s3 origin identity"
 }
 
-# S3 bucket for static website hosting in primary us-west-1 region
+# S3 bucket for static website hosting in primary us-east-1 region
 resource "aws_s3_bucket" "slalom_skiing_primary_bucket" {
-  bucket = "slalom_skiing_primary_bucket"
+  bucket = "slalom-skiing-primary-bucket"
 
   tags = {
     Name        = "SS us-east-1 bucket"
