@@ -13,6 +13,3 @@ output "private3_subnet_id" {
 output "private_route_table" {
     value = aws_route_table.rt_privateprimary.id
 }
-output "vpc_tag" {
-    value = aws_vpc.vpc1.tags
-}

@@ -14,13 +14,16 @@ resource "aws_ec2_transit_gateway" "primarytransitgateway" {
   auto_accept_shared_attachments   = var.auto_accept_shared_attachments
   amazon_side_asn                  = var.amazon_side_asn
   description = "Transit Gateway us-west-1"
+  tags = {
+    Name = "us-east-1 tgw"
+  }
+
 }
 resource "aws_ec2_transit_gateway" "secondarytransitgateway" {
   provider = aws.peer
   description = "Transit Gateway eu-west-1"
 }
 # Connect transit gateway to subnets and vpc
-# , var.private2_subnet_id, var.private3_subnet_id
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment" {
   subnet_ids         = [
     var.private1_subnet_id, 

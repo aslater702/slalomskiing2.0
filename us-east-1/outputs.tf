@@ -1,4 +1,4 @@
 # Output file
 output "vpc_id" {
-    value = "aws_vpc.vpc1.id"
+    value = module.vpc.vpc_id
 }

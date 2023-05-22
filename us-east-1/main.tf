@@ -17,7 +17,6 @@ provider "aws" {
 
 module "vpc" {
   source = "./vpc"
-  # transit_gateway_id = module.tgw.transit_gateway_id
 }
 
 module "tgw" {
@@ -29,4 +28,8 @@ module "tgw" {
   private_route_table = module.vpc.private_route_table
   auto_accept_shared_attachments = "enable"
   amazon_side_asn = "64512"
+}
+
+module "s3" {
+  source = "./s3"
 }
